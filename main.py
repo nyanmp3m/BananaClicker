@@ -1,12 +1,13 @@
 from flask import Flask, render_template
-from data import db_session
+from first_DB.users_data import db_session
 
 app = Flask(__name__)
 
+db_session.global_init("first_DB/db/users.db")
 
 @app.route('/')
 def index():
-    db_session.global_init("db/users.db")
+    db_sess = db_session.create_session()
     return render_template('index.html')
 
 
