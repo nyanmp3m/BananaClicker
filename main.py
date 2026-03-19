@@ -1,3 +1,5 @@
+#!/usr/bin/env venv/bin/python
+
 from flask import Flask, render_template
 from first_DB.users_data import db_session
 
