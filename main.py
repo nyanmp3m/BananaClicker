@@ -1,5 +1,7 @@
+#!/usr/bin/env venv/bin/python
+
 from flask import Flask, render_template
-from data import db_session
+from SQLdata import db_session
 
 app = Flask(__name__)
 
