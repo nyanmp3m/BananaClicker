@@ -1,3 +1,5 @@
+#!/usr/bin/env venv/bin/python
+
 import os
 import sys
 from flask import Flask, render_template, request, redirect, url_for, flash, session
@@ -29,7 +31,9 @@ def index():
 
     db_sess = db_session.create_session()
     user = db_sess.query(User).get(session['user_id'])
-    return render_template('profile.html', user=user)
+
+    return redirect(url_for('login_page'))
+
 
 
 @app.route('/login_page')
@@ -45,7 +49,6 @@ def register():
         password = request.form['password']
 
         db_sess = db_session.create_session()
-
 
         existing_user = db_sess.query(User).filter(User.email == email).first()
         if existing_user:
@@ -101,31 +104,6 @@ def logout():
     session.clear()
     flash('Вы вышли из системы', 'info')
     return redirect(url_for('login_page'))
-
-
-@app.route('/profile/edit', methods=['GET', 'POST'])
-def edit_profile():
-    if 'user_id' not in session:
-        return redirect(url_for('login_page'))
-
-    db_sess = db_session.create_session()
-    user = db_sess.query(User).get(session['user_id'])
-
-    if request.method == 'POST':
-        try:
-            user.name = request.form['name']
-            user.about = request.form['about']
-            if request.form['birthday']:
-                user.birthday = datetime.strptime(request.form['birthday'], '%Y-%m-%d')
-
-            db_sess.commit()
-            session['user_name'] = user.name
-            flash('Профиль обновлен', 'success')
-            return redirect(url_for('index'))
-        except Exception as e:
-            flash(f'Ошибка: {str(e)}', 'error')
-
-    return render_template('edit_profile.html', user=user)
 
 
 if __name__ == '__main__':
