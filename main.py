@@ -17,7 +17,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-here'
 
 
-db_path = os.path.join(os.path.dirname(__file__), 'instance', 'users.db')
+db_path = os.path.join(os.path.dirname(__file__), 'first_DB', 'db', 'users1.db')
 os.makedirs(os.path.dirname(db_path), exist_ok=True)
 
 
@@ -32,7 +32,7 @@ def index():
     db_sess = db_session.create_session()
     user = db_sess.query(User).get(session['user_id'])
 
-    return redirect(url_for('login_page'))
+    return f"Привет, {user.name}!"
 
 
 
