@@ -32,7 +32,7 @@ def index():
     db_sess = db_session.create_session()
     user = db_sess.query(User).get(session['user_id'])
 
-    return f"Привет, {user.name}!"
+    return redirect(url_for('login_page'))
 
 
 
@@ -47,6 +47,8 @@ def register():
         name = request.form['name']
         email = request.form['email']
         password = request.form['password']
+
+        print(f'Была совершена регистрация нового пользователя: {name}, {email}, {password}')
 
         db_sess = db_session.create_session()
 
