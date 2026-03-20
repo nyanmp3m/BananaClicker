@@ -1,6 +1,8 @@
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
+
 from sqlalchemy.orm import Session
+from contextlib import contextmanager
 
 SqlAlchemyBase = orm.declarative_base()
 
@@ -29,3 +31,16 @@ def global_init(db_file):
 def create_session() -> Session:
     global __factory
     return __factory()
+
+
+@contextmanager
+def session_scope():
+    session = create_session()
+    try:
+        yield session
+        session.commit()
+    except:
+        session.rollback()
+        raise
+    finally:
+        session.close()

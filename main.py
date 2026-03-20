@@ -2,13 +2,11 @@
 
 import os
 import sys
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, g
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
-
 sys.path.insert(0, os.path.dirname(__file__))
-
 
 from first_DB.users_data import db_session
 from first_DB.users_data.about_users import User
@@ -19,7 +17,6 @@ app.config['SECRET_KEY'] = 'your-secret-key-here'
 
 db_path = os.path.join(os.path.dirname(__file__), 'first_DB', 'db', 'users1.db')
 os.makedirs(os.path.dirname(db_path), exist_ok=True)
-
 
 db_session.global_init(db_path)
 
@@ -32,7 +29,7 @@ def index():
     db_sess = db_session.create_session()
     user = db_sess.query(User).get(session['user_id'])
 
-    return redirect(url_for('login_page'))
+    return render_template('main.html')
 
 
 
@@ -101,7 +98,7 @@ def login():
         return redirect(url_for('login_page'))
 
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
     session.clear()
     flash('Вы вышли из системы', 'info')
