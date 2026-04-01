@@ -1,14 +1,171 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Main Page</title>
-    </head>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Кликер с рекламой и правой лентой</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    height: 100vh;
+    position: relative;
+  }
 
-    <body>
-        <form action=" {{ url_for('logout') }}" method="post">
-            <button type="submit">Logout</button>
-        </form>
-    </body>
+  /* Центр - окно для клика */
+  .center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #e0e0e0;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    max-width: calc(100% - 160px);
+    border-radius: 10px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Правый край - фиксированная лента */
+  .right-strap {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 160px; /* ширина ленты */
+    height: 100vh; /* полная высота */
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px 0;
+    overflow-y: auto; /* при необходимости прокрутка */
+    z-index: 2; /* чтобы было поверх других элементов */
+  }
+
+  /* Пример содержимого правой ленты */
+  .right-strap img {
+    width: 160px;
+    height: auto;
+    margin: 1px 0;
+  }
+
+
+  /* Заголовок */
+  .center h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+  }
+
+  /* Кнопка клика */
+  .click-btn {
+    font-size: 20px;
+    padding: 15px 30px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .click-btn:hover {
+    background-color: #45a049;
+  }
+
+  /* Результат/счёт */
+  #score {
+    margin-top: 15px;
+    font-size: 18px;
+    color: #222;
+  }
+
+  /* Кнопка logout */
+  .logout-form {
+    margin-top: 20px;
+  }
+
+  .logout-form button {
+    padding: 10px 20px;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  .logout-form button:hover {
+    background-color: #c9302c;
+  }
+
+  /* Гифки по бокам */
+  .gif {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+  }
+
+  /* Адаптивность */
+  @media(max-width: 600px) {
+    body {
+      flex-direction: column;
+    }
+    .side {
+      width: 80px;
+    }
+    .center {
+      max-width: 90%;
+    }
+    .right-strap {
+      width: 60px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="center">
+  <h1>Кликер</h1>
+  <button class="click-btn" id="clickBtn">Кликни меня!</button>
+  <div id="score">Счёт: 0</div>
+  <!-- Форма logout -->
+  <form action="{{ url_for('logout') }}" method="post" class="logout-form">
+    <button type="submit">Logout</button>
+  </form>
+</div>
+
+<!-- Правая лента -->
+<div class="right-strap">
+  <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHplcGpuM2VlNzM0N3dkM2lxMmlwNHdjbW1jbDBzenR3bXAzNWs2MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AC6oZZbtrLQa4GQkgX/giphy.gif" alt="Реклама" />
+  <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3pxemNhYWtiYnh3Z2t0b2R3czczODU3em9kazFlY3JyaGRmZ2FlMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YoGyqo06xkIOMagsmW/giphy.gif" alt="Реклама" />
+  <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExeGpsZTN4NGUxZWVrbXIyNnNzOG1ueWd6dnY1dzlnNGdrYnRjbHV5OSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/SiV54N79YfM30lZLAm/giphy.gif" alt="Реклама" />
+  <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGdrcDZsOWU2MnE3anhkdXQ0YTRrejFhazNmMTQ0NXkzc2E2YjVmZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/cLSiUkvpRggjp5J8Bw/giphy.gif" alt="Реклама"/>
+  <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MzdkNXZzZDA3NHp3cW5ueHhvaWpubWFmNXM1a243NWlsY2V5dXh1bCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Re33JaaYIvCgnfmuod/giphy.gif" alt="Реклама"/>
+  <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MzdkNXZzZDA3NHp3cW5ueHhvaWpubWFmNXM1a243NWlsY2V5dXh1bCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/GUaLFb5zS5dLrvR7kw/giphy.gif" alt="Реклама"/>
+  <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MzdkNXZzZDA3NHp3cW5ueHhvaWpubWFmNXM1a243NWlsY2V5dXh1bCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/aYRwPCJDc4s7VGbZ0F/giphy.gif" alt="Реклама"/>
+  <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3emlvajBweG5jcXRmYzBxbjlvbGtrZXpsdGZwNmdveXN2eGZsemNkYiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/USPXKwyZCsChfXStkQ/giphy.gif" alt="Реклама"/>
+  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGR4Z3M0cTFidGtkeDBtMDYwNGp4NWNseTMxdTc1d3pzdmY1cDlveiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/xoZWpxtSLecftH30K1/giphy.gif" alt="Реклама"/>
+  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGR4Z3M0cTFidGtkeDBtMDYwNGp4NWNseTMxdTc1d3pzdmY1cDlveiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ZxWIUYDAKBIuKKkds3/giphy.gif" alt="Реклама"/>
+  <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3cGVuaW15enlrb2QwZjl3NmN4b2RzODBzenh6eGZidXN4bjZzZW9paCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/LMNsgeBFskg4sd7bWk/giphy.gif" alt="Реклама"/>
+  <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3bDV5YjdybGt1dXZ3emp2MjY2aGFmdnhjbXdmMWJ1eHJ4ZmtrNDFrdiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/LDWGyQRkMHbTIEE6QU/giphy.gif" alt="Реклама"/>
+  <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3aHp6NWIxd3k4emxpb3piM2tobGJpb3hrZ3I0am00MDRlemQzNm5pYSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/8y4ZcCzsKRMQl1LOOU/giphy.gif" alt="Реклама"/>
+  <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZzA0ZXJxNnJpM2NvcnEyNDJxam1oZXV0amQ2MmR3YnV4aHFqdGxuaCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/vmqdohw2qKbPtYWLml/giphy.gif" alt="Реклама"/>
+  <!-- Можно добавить больше элементов -->
+</div>
+
+<script>
+  let count = 0;
+  const btn = document.getElementById('clickBtn');
+  const scoreDiv = document.getElementById('score');
+
+  btn.addEventListener('click', () => {
+    count++;
+    scoreDiv.textContent = 'Счёт: ' + count;
+  });
+</script>
+
+</body>
 </html>
