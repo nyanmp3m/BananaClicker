@@ -1,8 +1,12 @@
-let count = 0;
-const btn = document.getElementById('clickBtn');
-const scoreDiv = document.getElementById('score');
-
-btn.addEventListener('click', () => {
-    count++;
-scoreDiv.textContent = 'Счёт: ' + count;
+document.getElementById('clickBtn').addEventListener('click', function() {
+  fetch('/click', {
+    method: 'GET'
+  })
+  .then(response => response.text())
+  .then(data => {
+    document.getElementById('score').innerText = 'Счёт: ' + data;
+  })
+  .catch(error => {
+    console.error('Ошибка при отправке запроса:', error);
+  });
 });

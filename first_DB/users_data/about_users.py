@@ -13,3 +13,4 @@ class User(SqlAlchemyBase):
     password = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                      default=datetime.datetime.now)
+    json_data = sqlalchemy.Column(sqlalchemy.Text, nullable=True)

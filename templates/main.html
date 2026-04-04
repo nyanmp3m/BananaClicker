@@ -11,7 +11,7 @@
     <div class="center">
         <h1>Кликер</h1>
         <button class="click-btn" id="clickBtn">Кликни меня!</button>
-        <div id="score">Счёт: 0</div>
+        <div id="score">Счёт: {{ score }}</div>
         <form action="{{ url_for('logout') }}" method="post" class="logout-form">
             <button type="submit">Logout</button>
         </form>
@@ -37,9 +37,24 @@
 
     <div class="left-strap">
         <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2N3bmNkcXQ1Y21vZDl5dTl5OXBydmwzYXgwbXMyb3Azand5bHk4ciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Spq2koF9hi9qmOOavS/giphy.gif" alt="Реклама"/>
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzE1ejdldHptbDJwMWt6dnRneWh6M3ltY3AwMnFnd2duMzAzeWl6OCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/8PZjEA5DEbgWqG4bxo/giphy.gif" alt="Реклама"/>
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzE1ejdldHptbDJwMWt6dnRneWh6M3ltY3AwMnFnd2duMzAzeWl6OCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/aLFk0ZOplASSy3K0U3/giphy.gif" alt="Реклама"/>
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzE1ejdldHptbDJwMWt6dnRneWh6M3ltY3AwMnFnd2duMzAzeWl6OCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/8y4ZcCzsKRMQl1LOOU/giphy.gif" alt="Реклама"/>
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzE1ejdldHptbDJwMWt6dnRneWh6M3ltY3AwMnFnd2duMzAzeWl6OCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/lxxOGaDRk4f7R5TkBd/giphy.gif" alt="Реклама"/>
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzE1ejdldHptbDJwMWt6dnRneWh6M3ltY3AwMnFnd2duMzAzeWl6OCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/LBb735fuQwRKAVzN23/giphy.gif" alt="Реклама"/>
+        <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3c3ZqaXl6emIzNWNhN2V1c2wxczQzcHVkcDFxa2Q2M29uYXhuYXZwNCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/RVCJ3vwebUGDpoy7Tm/giphy.gif" alt="Реклама"/>
+        <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ajVvMDhoc3llMnVpN2dwd3g5azZudTRwaWduNTB6MzBwb3N0Njg5diZlcD12MV9naWZzX3NlYXJjaCZjdD1n/VFPRXWnYSeyr0diFse/giphy.gif" alt="Реклама"/>
+        <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3cmEwdHd1Y2xxbTRjamdueDgwYXVyZ3J0bnQ3aGJ2dmd0NjU2anl2dyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Poht1CaBxA18DXu6Gx/giphy.gif" alt="Реклама"/>
+        <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3eXg2d2U2Y2J6NzBtejBzeXU2andmMjBhczNjZjU1enluenFlOWNoMyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/V5RDHhUKr4ehMcX1M8/giphy.gif" alt="Реклама"/>
+        <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3eXg2d2U2Y2J6NzBtejBzeXU2andmMjBhczNjZjU1enluenFlOWNoMyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/RYF3cIJiNA3Wn2La47/giphy.gif" alt="Реклама"/>
+        <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3eXg2d2U2Y2J6NzBtejBzeXU2andmMjBhczNjZjU1enluenFlOWNoMyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/6jM8Cxna4bmxyrXayu/giphy.gif" alt="Реклама"/>
+        <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3aHlzcjF5amw4YTllOGRqaWRpeWNlbWlrNzk2MHAwM29pdjdlMWVhZiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/4PxhNsOlVAnGvAD7po/giphy.gif" alt="Реклама"/>
+        <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3dHFpYzJodHQ0eXprejg1NTV0OGtraTVycTZqZTJxbjZqanIzNTJ4byZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Dg4TxjYikCpiGd7tYs/giphy.gif" alt="Реклама"/>
+        <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3N3d0dWMzZzJxamJsY2sxbXA0NzN2eDZqbzQ0Ymx1djFpd3ZsNG1yNCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/joYf3Ba2phD15ch9Nt/giphy.gif" alt="Реклама"/>
+        <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3N3d0dWMzZzJxamJsY2sxbXA0NzN2eDZqbzQ0Ymx1djFpd3ZsNG1yNCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Qz3fzoG7zhRup5sfzY/giphy.gif" alt="Реклама"/>
     </div>
 
-    <script>src="/static/js/main_script.js"</script>
+    <script src="/static/js/main_script.js"></script>
 
 </body>
 </html>
