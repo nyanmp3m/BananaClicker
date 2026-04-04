@@ -1,4 +1,4 @@
-document.getElementById('clickBtn').addEventListener('click', function() {
+document.getElementById('bananaImg').addEventListener('click', function() {
   fetch('/click', {
     method: 'GET'
   })

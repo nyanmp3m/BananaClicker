@@ -106,7 +106,6 @@ def register_routes(app):
         userScore = userData.get('score')
 
         score = userScore
-        print(f'Current score: {score}')
 
         return render_template('main.html', score=userScore)
 
