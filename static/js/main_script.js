@@ -4,8 +4,10 @@ document.getElementById('bananaImg').addEventListener('click', () => {
     .then(data => {
       document.getElementById('score').innerText = 'Счёт: ' + data;
 
+      const bananaImagePath = document.body.dataset.bananaImage;
+
       const miniBanana = document.createElement('img');
-      miniBanana.src = 'https://www.nicepng.com/png/full/769-7690159_-banana-8-8-8bit-picsart.png';
+      miniBanana.src = bananaImagePath;
       miniBanana.className = 'mini-banana';
 
       const windowWidth = window.innerWidth;
