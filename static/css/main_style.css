@@ -77,6 +77,14 @@ body {
     margin-left: 40px;
   }
 
+  .mini-banana {
+    position: absolute;
+    width: 50px;
+    transition: transform 2s linear, opacity 2s linear;
+    z-index: 3;
+    margin-left: 0px;
+  }
+
   #bananaImg {
     cursor: pointer;
     width: 100;
@@ -87,7 +95,7 @@ body {
   /* Результат/счёт */
   #score {
     margin-top: 25px;
-    margin-left: 100px;
+    margin-left: 150px;
     font-size: 56px;
     color: #222;
   }
