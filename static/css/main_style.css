@@ -49,8 +49,23 @@ body {
     gap: 100px; /* расстояние между текстом и изображением */
   }
 
-  .label {
+  .first-item-text {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  #first-item-label {
     font-size: 80px;
+  }
+
+  #first-item-price {
+    font-size: 30px;
+  }
+
+  #first-item-priceNum {
+    font-size: 30px;
   }
 
   /* Правый край - фиксированная лента */

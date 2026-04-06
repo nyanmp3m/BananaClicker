@@ -5,7 +5,8 @@
             "count": 0,
             "auto": false,
             "add_count": 1,
-            "price": 100
+            "price": 100,
+            "startPrice": 100
         }
     }
 }

@@ -119,11 +119,13 @@ def register_routes(app):
         if score - inventory['firstItem']['price'] >= 0:
             inventory['firstItem']['count'] += 1
             score -= inventory['firstItem']['price']
-            
-            return {'firstItem_count': inventory['firstItem']['count'], 'score': score}
+
+            inventory['firstItem']['price'] = int(inventory['firstItem']['price'] + inventory['firstItem']['startPrice'] * (inventory['firstItem']['count'] / 10))
+
+            return {'firstItem_count': inventory['firstItem']['count'], 'score': score, 'newPrice':  inventory['firstItem']['price']}
         
-        else:
-            return {'firstItem_count': inventory['firstItem']['count'], 'score': -407}
+        elif score - inventory['firstItem']['price'] < 0:
+            return {'firstItem_count': inventory['firstItem']['count'], 'score': -407, 'newPrice': inventory['firstItem']['price']}
 
 
     @app.route('/between_requests')
@@ -147,7 +149,7 @@ def register_routes(app):
         score = userScore
         inventory = userData.get('purchases')
 
-        return render_template('main.html', score=userScore, firstItem_count=inventory['firstItem']['count'])
+        return render_template('main.html', score=userScore, firstItem_count=inventory['firstItem']['count'], firstItem_price=inventory['firstItem']['price'])
 
     @app.route('/login_page')
     def login_page():

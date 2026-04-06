@@ -23,7 +23,11 @@
 
     <div class="container-shop">
         <div class="shop-item">
-            <span class="label" id="first-item-label">{{ firstItem_count }}</span>
+            <div class="first-item-text">
+                <span class="label" id="first-item-label">{{ firstItem_count }}</span>
+                <span class="label" id="first-item-price">Текущая цена:</span>
+                <span class="label" id="first-item-priceNum">{{ firstItem_price }}</span>
+            </div>
             <img src="{{ url_for('static', filename='images/FirstItem.png') }}" alt="FirstItem" id="first-item">
         </div>
     </div> 

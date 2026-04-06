@@ -50,6 +50,7 @@ document.getElementById('first-item').addEventListener('click', () => {
     fetch('/buy_first_item', { method: 'GET' })
         .then (response => response.json())
         .then (data => {
+            document.getElementById('first-item-priceNum').innerText = data.newPrice;
             if (data.score >= 0) {
                 document.getElementById('first-item-label').innerText = data.firstItem_count;
                 document.getElementById('score').innerText = 'Бананчики: ' + data.score;
