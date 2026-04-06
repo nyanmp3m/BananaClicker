@@ -12,11 +12,21 @@
         <h1>КЛИКАЙ ПО БАНАНУ!!!</h1>
         <!--https://www.nicepng.com/png/full/769-7690159_-banana-8-8-8bit-picsart.png-->
         <img src="https://www.nicepng.com/png/full/769-7690159_-banana-8-8-8bit-picsart.png" id="bananaImg">
-        <div id="score">Счёт: {{ score }}</div>
+        <div class="container">
+            <div id="score">Бананчики: {{ score }}</div>
+            <img src="{{ url_for('static', filename='images/Banana3.png') }}" alt="Картинка" class="icon">
+        </div>
         <form action="{{ url_for('logout') }}" method="post" class="logout-form">
             <button type="submit">НЕ УХАДИ...</button>
         </form>
     </div>
+
+    <div class="container-shop">
+        <div class="shop-item">
+            <span class="label" id="first-item-label">{{ firstItem_count }}</span>
+            <img src="{{ url_for('static', filename='images/FirstItem.png') }}" alt="FirstItem" id="first-item">
+        </div>
+    </div> 
 
     <!-- Правая лента -->
     <div class="right-strap">

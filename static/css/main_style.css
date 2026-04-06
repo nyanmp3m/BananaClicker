@@ -15,13 +15,42 @@ body {
     align-items: flex-start;
     justify-content: center;
     background-color: #e0e0e0;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    max-width: calc(100%);
+    max-width: calc(50%);
     margin-left: 160px;
-    margin-right: 160px;
+    margin-right: 0px;
     border-radius: 10px;
     position: relative;
     z-index: 1;
+  }
+
+  .container-shop {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    background-color: #e0e0e0;
+    max-width: calc(50%);
+    margin-right: 160px;
+    position: relative;
+    z-index: 2;
+    max-height: 90%;
+  }
+
+  .container-shop img {
+    margin-right: 0px;
+    width: 30vw;
+    height: auto;
+  }
+
+  .shop-item {
+    display: flex;
+    align-items: center;
+    gap: 100px; /* расстояние между текстом и изображением */
+  }
+
+  .label {
+    font-size: 80px;
   }
 
   /* Правый край - фиксированная лента */
@@ -85,24 +114,41 @@ body {
     margin-left: 0px;
   }
 
-  #bananaImg {
-    cursor: pointer;
-    width: 100;
-    height: auto;
-    margin-left: 50px;
+  .container {
+    display: flex;
+    align-items: flex-end; /* выравнивание по нижней линии */
+    position: fixed;
+    bottom: 0;
+    left: 0;
   }
 
-  /* Результат/счёт */
   #score {
-    margin-top: 25px;
-    margin-left: 150px;
+    margin-left: 220px;
+    margin-bottom: 30px;
     font-size: 56px;
     color: #222;
+  }
+  .icon {
+    margin-left: 10px;
+    margin-bottom: 20px;
+    height: auto;
+    width: 100px;
+  }
+
+  #bananaImg {
+    cursor: pointer;
+    width: 30vw;
+    height: 80vh;
+    margin-left: 50px;
+    margin-bottom: 150px;
   }
 
   /* Кнопка logout */
   .logout-form {
-    margin-left: calc(100% - 160px);
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin-right: 180px;
     margin-bottom: 20px;
   }
 
@@ -114,8 +160,9 @@ body {
     border-radius: 6px;
     cursor: pointer;
     font-size: 16px;
-    width: 150px;
-    height: 50px;
+    width: 10vw;
+    height: 5vh;
+    
   }
   .logout-form button:hover {
     background-color: #c9302c;

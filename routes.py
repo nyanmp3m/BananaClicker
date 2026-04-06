@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from first_DB import db_session
 from first_DB.users_data.about_users import User
-from globalVariables import score
+from globalVariables import score, inventory
 
 db_sess = None
 lastUser = None
@@ -52,20 +52,40 @@ def get_flash_template(key):
     else:
         return "Последний флэш без нормального ключа..."
 
+#  "count": 0,
+# "auto": false,
+# "add_count": 1  
+def calculate_coaf(inventory: dict[str, int]) -> dict[str, int]:
+    coaf = {
+        "perClick": 1,
+        "autoClick": 0
+    }
+
+    for key, item in inventory.items():
+        if not item['auto']:
+            coaf['perClick'] += (item['add_count'] * item['count'])
+        elif item['auto']:
+            coaf['autoClick'] += (item['add_count'] * item['count'])
+
+    return coaf
+
+
 def register_routes(app):
     @app.teardown_appcontext
     def autosave_userData(exception=None):
-        global lastUser
+        global lastUser, inventory
 
         if lastUser:
             print(f'AutoSave: {score}')
+            for keys, items in inventory.items():
+                print(f'{keys}  : {items['count']}')
 
             try:
-                userData = json.loads(lastUser.json_data)
+                print(inventory)
 
                 new_data = {
                     "score": score,
-                    "purchases": userData.get('purchases')
+                    "purchases": inventory
                 }
                 
                 lastUser.json_data = json.dumps(new_data)
@@ -85,14 +105,30 @@ def register_routes(app):
     
     @app.route('/click', methods=['GET'])
     def handle_click():
-        global score
+        global score, inventory
 
-        score += 1
+        coaf = calculate_coaf(inventory=inventory)
+
+        score += coaf['perClick']
         return str(score)
+    
+    @app.route('/buy_first_item', methods=['GET'])
+    def handle_buy_first_item():
+        global inventory, score
+
+        if score - inventory['firstItem']['price'] >= 0:
+            inventory['firstItem']['count'] += 1
+            score -= inventory['firstItem']['price']
+            
+            return {'firstItem_count': inventory['firstItem']['count'], 'score': score}
+        
+        else:
+            return {'firstItem_count': inventory['firstItem']['count'], 'score': -407}
+
 
     @app.route('/between_requests')
     def between_requests():
-        global score, db_sess, lastUser
+        global score, db_sess, lastUser, inventory
 
         if 'user_id' not in session:
             return render_template('login.html', 
@@ -105,9 +141,13 @@ def register_routes(app):
         userData = json.loads(lastUser.json_data)
         userScore = userData.get('score')
 
-        score = userScore
+        print(userData)
+        print("Last USer gENERATED")
 
-        return render_template('main.html', score=userScore)
+        score = userScore
+        inventory = userData.get('purchases')
+
+        return render_template('main.html', score=userScore, firstItem_count=inventory['firstItem']['count'])
 
     @app.route('/login_page')
     def login_page():

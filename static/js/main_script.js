@@ -2,7 +2,7 @@ document.getElementById('bananaImg').addEventListener('click', () => {
   fetch('/click', { method: 'GET' })
     .then(response => response.text())
     .then(data => {
-      document.getElementById('score').innerText = 'Счёт: ' + data;
+      document.getElementById('score').innerText = 'Бананчики: ' + data;
 
       const bananaImagePath = document.body.dataset.bananaImage;
 
@@ -45,4 +45,19 @@ document.getElementById('bananaImg').addEventListener('click', () => {
     .catch(error => {
       console.error('Ошибка при отправке запроса:', error);
     });
+});
+document.getElementById('first-item').addEventListener('click', () => {
+    fetch('/buy_first_item', { method: 'GET' })
+        .then (response => response.json())
+        .then (data => {
+            if (data.score >= 0) {
+                document.getElementById('first-item-label').innerText = data.firstItem_count;
+                document.getElementById('score').innerText = 'Бананчики: ' + data.score;
+            } else {
+                document.getElementById('score').innerText = "Ты нищита";
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при отправке запроса:', error);
+        });
 });
