@@ -1,0 +1,104 @@
+.ad-popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    animation: adFadeIn 0.3s ease;
+}
+
+
+@keyframes adFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Контент всплывающего окна */
+.ad-popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: white;
+    min-width: 320px;
+    max-width: 90%;
+    animation: adSlideIn 0.3s ease;
+}
+
+/* Анимация выезда */
+@keyframes adSlideIn {
+    from {
+        transform: translate(-50%, -70%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+/* Заголовок рекламы */
+.ad-title {
+    font-size: 28px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Текст рекламы */
+.ad-text {
+    margin-bottom: 25px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+
+/* Ссылка рекламы */
+.ad-link {
+    display: inline-block;
+    background: #ffd93d;
+    color: #333;
+    text-decoration: none;
+    padding: 12px 24px;
+    margin: 5px;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.ad-link:hover {
+    transform: scale(1.05);
+    background: #ffd700;
+}
+
+/* Таймер */
+.ad-timer {
+    font-size: 12px;
+    margin-top: 20px;
+    opacity: 0.8;
+}
+
+.ad-timer span {
+    font-weight: bold;
+    font-size: 16px;
+    color: #ffd93d;
+}
+
+/* Картинка в рекламе */
+.ad-image {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
