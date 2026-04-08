@@ -6,3 +6,4 @@ inventory = {
         "add_count": 1
     }
 }
+tax = 20 # in %

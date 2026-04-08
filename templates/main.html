@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="/static/css/advertising_style.css">
 <title>БАНАНОВЫЙ КЛИКЕР</title>
 </head>
-    <body data-banana-image="{{ url_for('static', filename='images/Banana2.png') }}">
+    <body data-banana-image="{{ url_for('static', filename='images/Banana2.png') }}"
+          data-super-cat-image="{{ url_for('static', filename='images/SuperCat.png') }}">
 
     <div class="center">
         <h1>КЛИКАЙ ПО БАНАНУ!!!</h1>
@@ -16,7 +17,7 @@
     </div>
 
     <div class="container-shop">
-        <div class="shop-item">
+        <div class="shop-item-first">
             <div class="first-item-text">
                 <span class="label" id="first-item-label">{{ firstItem_count }}</span>
                 <span class="label" id="first-item-price">Текущая цена:</span>
@@ -25,13 +26,22 @@
             <img src="{{ url_for('static', filename='images/FirstItem.png') }}" alt="FirstItem" id="first-item">
         </div>
 
-        <div class ="shop-item">
+        <div class="shop-item-second">
             <div class="second-item-text">
                 <span class="label" id="second-item-label">{{ secondItem_count }}</span>
                 <span class="label" id="second-item-price">Текущая цена:</span>
                 <span class="label" id="second-item-priceNum">{{ secondItem_price }}</span>
             </div>
-            <img src="{{ url_for('static', filename='images/SecondItem.png') }}" alt="SecondItem" id="second-item"
+            <img src="{{ url_for('static', filename='images/SecondItem.png') }}" alt="SecondItem" id="second-item">
+        </div>
+
+        <div class="shop-item-third">
+            <div class="third-item-text">
+                <span class="label" id="third-item-label">{{ thirdItem_count }}</span>
+                <span class="label" id="third-item-price">Текущая цена:</span>
+                <span class="label" id="third-item-priceNum">{{ thirdItem_price }}</span>
+            </div>
+            <img src="{{ url_for('static', filename='images/ThirdItem.png') }}" alt="ThirdItem" id="third-item">
         </div>
 
         <form action="{{ url_for('logout') }}" method="post" class="logout-form">

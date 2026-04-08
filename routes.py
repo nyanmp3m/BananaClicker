@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from first_DB import db_session
 from first_DB.users_data.about_users import User
-from globalVariables import score, inventory
+from globalVariables import score, inventory, tax
 
 db_sess = None
 lastUser = None
@@ -135,7 +135,7 @@ def register_routes(app):
             inventory['firstItem']['count'] += 1
             score -= inventory['firstItem']['price']
 
-            inventory['firstItem']['price'] = int(inventory['firstItem']['price'] + inventory['firstItem']['startPrice'] * (inventory['firstItem']['count'] / 10))
+            inventory['firstItem']['price'] = int(inventory['firstItem']['price'] + inventory['firstItem']['startPrice'] * (inventory['firstItem']['count'] / tax))
 
             return {'firstItem_count': inventory['firstItem']['count'], 'score': score, 'newPrice':  inventory['firstItem']['price']}
         
@@ -150,22 +150,48 @@ def register_routes(app):
             inventory['secondItem']['count'] += 1
             score -= inventory['secondItem']['price']
 
-            inventory['secondItem']['price'] = int(inventory['secondItem']['price'] + inventory['secondItem']['startPrice'] * (inventory['secondItem']['count'] / 10))
+            inventory['secondItem']['price'] = int(inventory['secondItem']['price'] + inventory['secondItem']['startPrice'] * (inventory['secondItem']['count'] / tax))
 
             return {'secondItem_count': inventory['secondItem']['count'], 'score': score, 'newPrice': inventory['secondItem']['price']}
         
         elif score - inventory['secondItem']['price'] < 0:
             return {'secondItem_count': inventory['secondItem']['count'], 'score': -407, 'newPrice': inventory['secondItem']['price']}
+    
+    @app.route('/buy_third_item', methods=['GET'])
+    def handle_buy_third_item():
+        global inventory, score
+        
+        if score - inventory['thirdItem']['price'] >= 0:
+            inventory['thirdItem']['count'] += 1
+            score -= inventory['thirdItem']['price']
+
+            inventory['thirdItem']['price'] = int(inventory['thirdItem']['price'] + inventory['thirdItem']['startPrice'] * (inventory['thirdItem']['count'] / tax))
+
+            return {'thirdItem_count': inventory['thirdItem']['count'], 'score': score, 'newPrice': inventory['thirdItem']['price']}
+        
+        elif score - inventory['thirdItem']['price'] < 0:
+            return {'thirdItem_count': inventory['thirdItem']['count'], 'score': -407, 'newPrice': inventory['thirdItem']['price']}
         
     @app.route('/auto_click', methods=['GET'])
     def handle_auto_click():
         global inventory, score
 
         coaf = calculate_coaf(inventory=inventory)
-        score += round(coaf['autoClick'], 1)
+        score += coaf['autoClick']
+        
+        print(f'Auto CLICK: {coaf['autoClick']}')
 
         return {'score': score}
+    
+    @app.route('/super_banana_click', methods=['GET'])
+    def handle_super_banana_click():
+        global inventory, score
 
+        coaf = calculate_coaf(inventory=inventory)
+        super_banana = coaf['autoClick'] * 100 + coaf['perClick'] * 100
+        score += super_banana
+
+        return {'score': score}
 
     @app.route('/between_requests')
     def between_requests():
@@ -189,7 +215,8 @@ def register_routes(app):
         inventory = userData.get('purchases')
 
         return render_template('main.html', score=userScore, firstItem_count=inventory['firstItem']['count'], firstItem_price=inventory['firstItem']['price'],
-                                                             secondItem_count=inventory['secondItem']['count'], secondItem_price=inventory['secondItem']['price'])
+                                                             secondItem_count=inventory['secondItem']['count'], secondItem_price=inventory['secondItem']['price'],
+                                                             thirdItem_count=inventory['thirdItem']['count'], thirdItem_price=inventory['thirdItem']['price'])
 
     @app.route('/login_page')
     def login_page():
