@@ -62,3 +62,30 @@ document.getElementById('first-item').addEventListener('click', () => {
             console.error('Ошибка при отправке запроса:', error);
         });
 });
+document.getElementById('second-item').addEventListener('click', () => {
+    fetch('/buy_second_item', { method: 'GET' })
+        .then (response => response.json())
+        .then (data => {
+            document.getElementById('second-item-priceNum').innerText = data.newPrice;
+            if (data.score >= 0) {
+                document.getElementById('second-item-label').innerText = data.secondItem_count;
+                document.getElementById('score').innerText = 'Бананчики: ' + data.score;
+            } else {
+                document.getElementById('score').innerText = "Ты нищита";
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при отправке запроса:', error);
+        });
+});
+setInterval(function() {
+    fetch('/auto_click')
+        .then(response => response.json())
+        .then(data => {
+            if (data.score >= 0) {
+                document.getElementById('score').innerText = "Бананчики: " + data.score;
+            } else {
+                console.log('Error AutoClick');
+            }
+        });
+}, 1000);

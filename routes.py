@@ -103,6 +103,21 @@ def register_routes(app):
         session.clear()
         return redirect(url_for('between_requests'))
     
+    @app.route('/set_banana', methods=['GET'])
+    def handle_get_banana():
+        global score
+        try:
+            newBanana_count = int(request.args.get('count'))
+            score = newBanana_count
+
+            print(f'Было установленно новое кол-во бананов {score}')
+
+            return redirect(url_for('between_requests'))
+
+        except Exception as exc:
+            print(f'Error: {exc}')
+
+    
     @app.route('/click', methods=['GET'])
     def handle_click():
         global score, inventory
@@ -126,6 +141,30 @@ def register_routes(app):
         
         elif score - inventory['firstItem']['price'] < 0:
             return {'firstItem_count': inventory['firstItem']['count'], 'score': -407, 'newPrice': inventory['firstItem']['price']}
+        
+    @app.route('/buy_second_item', methods=['GET'])
+    def handle_buy_second_item():
+        global inventory, score
+        
+        if score - inventory['secondItem']['price'] >= 0:
+            inventory['secondItem']['count'] += 1
+            score -= inventory['secondItem']['price']
+
+            inventory['secondItem']['price'] = int(inventory['secondItem']['price'] + inventory['secondItem']['startPrice'] * (inventory['secondItem']['count'] / 10))
+
+            return {'secondItem_count': inventory['secondItem']['count'], 'score': score, 'newPrice': inventory['secondItem']['price']}
+        
+        elif score - inventory['secondItem']['price'] < 0:
+            return {'secondItem_count': inventory['secondItem']['count'], 'score': -407, 'newPrice': inventory['secondItem']['price']}
+        
+    @app.route('/auto_click', methods=['GET'])
+    def handle_auto_click():
+        global inventory, score
+
+        coaf = calculate_coaf(inventory=inventory)
+        score += round(coaf['autoClick'], 1)
+
+        return {'score': score}
 
 
     @app.route('/between_requests')
@@ -149,7 +188,8 @@ def register_routes(app):
         score = userScore
         inventory = userData.get('purchases')
 
-        return render_template('main.html', score=userScore, firstItem_count=inventory['firstItem']['count'], firstItem_price=inventory['firstItem']['price'])
+        return render_template('main.html', score=userScore, firstItem_count=inventory['firstItem']['count'], firstItem_price=inventory['firstItem']['price'],
+                                                             secondItem_count=inventory['secondItem']['count'], secondItem_price=inventory['secondItem']['price'])
 
     @app.route('/login_page')
     def login_page():

@@ -7,6 +7,13 @@
             "add_count": 1,
             "price": 100,
             "startPrice": 100
+        },
+        "secondItem": {
+            "count": 0,
+            "auto": true,
+            "add_count": 1,
+            "price": 1000,
+            "startPrice": 1000
         }
     }
 }

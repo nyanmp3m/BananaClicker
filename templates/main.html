@@ -13,13 +13,6 @@
         <h1>КЛИКАЙ ПО БАНАНУ!!!</h1>
         <!--https://www.nicepng.com/png/full/769-7690159_-banana-8-8-8bit-picsart.png-->
         <img src="https://www.nicepng.com/png/full/769-7690159_-banana-8-8-8bit-picsart.png" id="bananaImg">
-        <div class="container">
-            <div id="score">Бананчики: {{ score }}</div>
-            <img src="{{ url_for('static', filename='images/Banana3.png') }}" alt="Картинка" class="icon">
-        </div>
-        <form action="{{ url_for('logout') }}" method="post" class="logout-form">
-            <button type="submit">НЕ УХАДИ...</button>
-        </form>
     </div>
 
     <div class="container-shop">
@@ -31,7 +24,31 @@
             </div>
             <img src="{{ url_for('static', filename='images/FirstItem.png') }}" alt="FirstItem" id="first-item">
         </div>
+
+        <div class ="shop-item">
+            <div class="second-item-text">
+                <span class="label" id="second-item-label">{{ secondItem_count }}</span>
+                <span class="label" id="second-item-price">Текущая цена:</span>
+                <span class="label" id="second-item-priceNum">{{ secondItem_price }}</span>
+            </div>
+            <img src="{{ url_for('static', filename='images/SecondItem.png') }}" alt="SecondItem" id="second-item"
+        </div>
+
+        <form action="{{ url_for('logout') }}" method="post" class="logout-form">
+            <button type="submit">НЕ УХАДИ...</button>
+        </form>
     </div> 
+
+    <div class="container-score">
+        <form action="{{ url_for('logout') }}" method="post" class="logout-form">
+            <button type="submit">НЕ УХАДИ...</button>
+        </form>
+
+        <div class="container">
+            <div id="score">Бананчики: {{ score }}</div>
+            <img src="{{ url_for('static', filename='images/Banana3.png') }}" alt="Картинка" class="icon">
+        </div>
+    </div>
 
     <!-- Правая лента -->
     <div class="right-strap">
