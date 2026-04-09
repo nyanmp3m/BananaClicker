@@ -24,7 +24,6 @@ document.getElementById('bananaImg').addEventListener('click', () => {
 
       // Выводим начальные координаты
       const startRect = miniBanana.getBoundingClientRect();
-      console.log('Начальные координаты мини-банана:', startRect.left, startRect.top);
 
       requestAnimationFrame(() => {
         miniBanana.style.transform = 'translateY(600px)';
@@ -32,7 +31,6 @@ document.getElementById('bananaImg').addEventListener('click', () => {
 
         const intervalId = setInterval(() => {
           const rectDuringFall = miniBanana.getBoundingClientRect();
-          console.log('Координаты во время падения:', rectDuringFall.left, rectDuringFall.top);
         }, 200);
 
         miniBanana.addEventListener('transitionend', () => {
@@ -79,7 +77,6 @@ setInterval(function() {
     document.body.appendChild(miniBanana);
 
     const startRect = miniBanana.getBoundingClientRect();
-    console.log('Начальные координаты мини-банана:', startRect.left, startRect.top);
 
     requestAnimationFrame(() => {
         miniBanana.style.transform = 'translateY(600px)';
@@ -87,7 +84,6 @@ setInterval(function() {
 
         const intervalId = setInterval(() => {
             const rectDuringFall = miniBanana.getBoundingClientRect();
-            console.log('Координаты во время падения:', rectDuringFall.left, rectDuringFall.top);
         }, 200);
 
         miniBanana.addEventListener('transitionend', () => {
@@ -154,6 +150,5 @@ setInterval(function() {
             if (data.score >= 0) {
                 document.getElementById('score').innerText = "Бананчики: " + data.score;
             }
-            lastTime = now;
         });
 }, 850);

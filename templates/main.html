@@ -5,17 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/static/css/main_style.css">
     <link rel="stylesheet" href="/static/css/advertising_style.css">
+    <link rel="stylesheet" href="/static/css/stats_style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&family=Gugi&display=swap" rel="stylesheet">
-<title>БАНАНОВЫЙ КЛИКЕР</title>
+    <title>БАНАНОВЫЙ КЛИКЕР</title>
 </head>
+
     <body data-banana-image="{{ url_for('static', filename='images/Banana2.png') }}"
           data-super-cat-image="{{ url_for('static', filename='images/SuperCat.png') }}">
 
     <div class="center">
         <h1>КЛИКАЙ ПО БАНАНУ!!!</h1>
-        <!--https://www.nicepng.com/png/full/769-7690159_-banana-8-8-8bit-picsart.png-->
         <img src="https://www.nicepng.com/png/full/769-7690159_-banana-8-8-8bit-picsart.png" id="bananaImg">
     </div>
 
@@ -55,6 +56,10 @@
     <div class="container-score">
         <form action="{{ url_for('logout') }}" method="post" class="logout-form">
             <button type="submit">НЕ УХАДИ...</button>
+        </form>
+
+        <form class="check-stats-form">
+            <button type="submit" id="check-stats-button">Статистика</button>
         </form>
 
         <div class="container">
@@ -102,6 +107,7 @@
 
     <script src="/static/js/advertising_script.js"></script>
     <script src="/static/js/main_script.js"></script>
+    <script src="/static/js/stats_script.js"></script>
 
 </body>
 </html>

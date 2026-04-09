@@ -1,0 +1,37 @@
+.stats-popup-overlay {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 7777;
+}
+
+.stats-popup-content {
+    position: relative;
+    background: #fc6d1a;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 400px;
+    min-width: 400px;
+    width: 90%;
+}
+
+#closeStatsBtn {
+    width: 100px;
+    height: 30px;
+    font-size: 20px;
+    position: absolute; 
+    bottom: 10px; 
+    right: 10px;
+}
+
+.stats-title {
+    font-size: 48px;
+}
+
+.stats-text {
+    font-size: 32px;
+}
+

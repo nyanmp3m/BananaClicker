@@ -103,6 +103,14 @@ def register_routes(app):
         session.clear()
         return redirect(url_for('between_requests'))
     
+    @app.route('/check_stats')
+    def handel_check_stats():
+        #<p>&nbsp;&nbsp;&nbsp;&nbsp;PerClick: 10,<br>&nbsp;&nbsp;&nbsp;&nbsp;AutoClick: 15</p>'
+
+        coaf = calculate_coaf(inventory=inventory)
+
+        return {'statsText': f'<p>&nbsp;&nbsp;&nbsp;&nbsp;PerClick: {coaf['perClick']},<br>&nbsp;&nbsp;&nbsp;&nbsp;AutoClick: {coaf['autoClick']},<br>&nbsp;&nbsp;&nbsp;&nbsp;Score: {score}</p>'}
+    
     @app.route('/set_banana', methods=['GET'])
     def handle_get_banana():
         global score
@@ -116,7 +124,6 @@ def register_routes(app):
 
         except Exception as exc:
             print(f'Error: {exc}')
-
     
     @app.route('/click', methods=['GET'])
     def handle_click():
@@ -178,7 +185,7 @@ def register_routes(app):
 
         coaf = calculate_coaf(inventory=inventory)
         score += coaf['autoClick']
-        
+
         print(f'Auto CLICK: {coaf['autoClick']}')
 
         return {'score': score}

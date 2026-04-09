@@ -1,13 +1,13 @@
 class AdPopup {
-        constructor(options = {}) {
-        const options = [
+    constructor(options = {}) {
+        const adOptions = [
             '🎁Вам подарок🎁',
             '🎉У вас есть сюрприз🎉',
             '🎈Подарок для вас🎈'
         ];
 
         const randomIndex = Math.floor(Math.random() * options.length);
-        const random_adTitle = options[randomIndex];
+        const random_adTitle = adOptions[randomIndex];
 
         this.settings = {
             interval: 120000,
