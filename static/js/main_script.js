@@ -142,6 +142,23 @@ document.getElementById('third-item').addEventListener('click', () => {
         });
 });
 
+document.getElementById('fourth-item').addEventListener('click', () => {
+    fetch('/buy_fourth_item', { method: 'GET' })
+        .then (response => response.json())
+        .then (data => {
+            document.getElementById('fourth-item-priceNum').innerText = data.newPrice;
+            if (data.score >= 0) {
+                document.getElementById('fourth-item-label').innerText = data.fourthItem_count;
+                document.getElementById('score').innerText = 'Бананчики: ' + data.score;
+            } else {
+                document.getElementById('score').innerText = "Ты нищита";
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при отправке запроса:', error);
+        });
+});
+
 
 setInterval(function() {
     fetch('/auto_click')

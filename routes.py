@@ -182,6 +182,21 @@ def register_routes(app):
         elif score - inventory['thirdItem']['price'] < 0:
             return {'thirdItem_count': inventory['thirdItem']['count'], 'score': -407, 'newPrice': inventory['thirdItem']['price']}
         
+    @app.route('/buy_fourth_item', methods=['GET'])
+    def handle_buy_fourth_item():
+        global inventory, score
+        
+        if score - inventory['fourthItem']['price'] >= 0:
+            inventory['fourthItem']['count'] += 1
+            score -= inventory['fourthItem']['price']
+
+            inventory['fourthItem']['price'] = int(inventory['fourthItem']['price'] + inventory['fourthItem']['startPrice'] * (inventory['fourthItem']['count'] / tax))
+
+            return {'fourthItem_count': inventory['fourthItem']['count'], 'score': score, 'newPrice': inventory['fourthItem']['price']}
+        
+        elif score - inventory['fourthItem']['price'] < 0:
+            return {'fourthItem_count': inventory['fourthItem']['count'], 'score': -407, 'newPrice': inventory['fourthItem']['price']}
+        
     @app.route('/auto_click', methods=['GET'])
     def handle_auto_click():
         global inventory, score
@@ -226,7 +241,8 @@ def register_routes(app):
 
         return render_template('main.html', score=userScore, firstItem_count=inventory['firstItem']['count'], firstItem_price=inventory['firstItem']['price'],
                                                              secondItem_count=inventory['secondItem']['count'], secondItem_price=inventory['secondItem']['price'],
-                                                             thirdItem_count=inventory['thirdItem']['count'], thirdItem_price=inventory['thirdItem']['price'])
+                                                             thirdItem_count=inventory['thirdItem']['count'], thirdItem_price=inventory['thirdItem']['price'],
+                                                             fourthItem_count=inventory['fourthItem']['count'], fourthItem_price=inventory['fourthItem']['price'])
 
     @app.route('/login_page')
     def login_page():

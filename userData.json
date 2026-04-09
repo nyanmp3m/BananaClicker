@@ -21,6 +21,13 @@
             "add_count": 10,
             "price": 10000,
             "startPrice": 10000
+        },
+        "fourthItem": {
+            "count": 0,
+            "auto": true,
+            "add_count": 10,
+            "price": 5000,
+            "startPrice": 5000
         }
     }
 }

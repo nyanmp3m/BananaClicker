@@ -48,6 +48,15 @@
             <img src="{{ url_for('static', filename='images/ThirdItem.png') }}" alt="ThirdItem" id="third-item">
         </div>
 
+        <div class="shop-item-fourth">
+            <div class="fourth-item-text">
+                <span class="label" id="fourth-item-label">{{ fourthItem_count }}</span>
+                <span class="label" id="fourth-item-price">Текущая цена:</span>
+                <span class="label" id="fourth-item-priceNum">{{ fourthItem_price }}</span>
+            </div>
+            <img src="{{ url_for('static', filename='images/FourthItem.png') }}" alt="FourthItem" id="fourth-item">
+        </div>
+
         <form action="{{ url_for('logout') }}" method="post" class="logout-form">
             <button type="submit">НЕ УХАДИ...</button>
         </form>

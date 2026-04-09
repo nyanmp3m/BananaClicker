@@ -69,6 +69,13 @@ body {
     flex-direction: row;
   }
 
+  .shop-item-fourth {
+    display: flex;
+    gap: 30px;
+    margin-right: 20px;
+    flex-direction: row;
+  }
+
   #first-item {
     min-width: 25vw;
   }
@@ -78,6 +85,10 @@ body {
   }
 
   #third-item {
+    min-width: 25vw;
+  }
+
+  #fourth-item {
     min-width: 25vw;
   }
 
@@ -107,6 +118,15 @@ body {
     justify-content: flex-start;
     margin-left: 10px;
   }
+
+  .fourth-item-text {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-left: 10px;
+  }
   
   #first-item {
     margin-right: 20px;
@@ -121,6 +141,12 @@ body {
   }
 
   #third-item {
+    margin-right: 20px;
+    width: 400px;
+    height: auto;
+  }
+
+  #fourth-item {
     margin-right: 20px;
     width: 400px;
     height: auto;
@@ -141,6 +167,13 @@ body {
   }
 
   #third-item-label {
+    font-size: 60px;
+    font-family: "Gugi", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  #fourth-item-label {
     font-size: 60px;
     font-family: "Gugi", sans-serif;
     font-weight: 400;
@@ -171,6 +204,14 @@ body {
     font-style: normal;
   }
 
+  #fourth-item-price {
+    font-size: 30px;
+    font-family: 'Comfortaa', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+  }
+
   #first-item-priceNum {
     font-size: 30px;
     font-family: 'Comfortaa', sans-serif;
@@ -188,6 +229,14 @@ body {
   }
 
   #third-item-priceNum {
+    font-size: 30px;
+    font-family: 'Comfortaa', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal; 
+  }
+
+  #fourth-item-priceNum {
     font-size: 30px;
     font-family: 'Comfortaa', sans-serif;
     font-optical-sizing: auto;
