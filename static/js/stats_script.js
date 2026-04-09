@@ -80,6 +80,7 @@ class SimpleAdPopup {
 let stats = new SimpleAdPopup({
     adText: ""
 });
+stats.close();  
 
 document.addEventListener('DOMContentLoaded', () => {
     const button = document.getElementById('check-stats-button');

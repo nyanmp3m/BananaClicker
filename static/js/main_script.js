@@ -159,7 +159,6 @@ document.getElementById('fourth-item').addEventListener('click', () => {
         });
 });
 
-
 setInterval(function() {
     fetch('/auto_click')
         .then(response => response.json())
@@ -169,3 +168,4 @@ setInterval(function() {
             }
         });
 }, 850);
+
