@@ -115,10 +115,13 @@ def register_routes(app):
     def handle_get_banana():
         global score
         try:
-            newBanana_count = int(request.args.get('count'))
-            score = newBanana_count
+            response_password = request.args.get('password') if request.args.get('password') else None
 
-            print(f'Было установленно новое кол-во бананов {score}')
+            if response_password == "cos(tan(tin()))":
+                newBanana_count = int(request.args.get('count'))
+                score = newBanana_count
+
+                print(f'Было установленно новое кол-во бананов {score}')
 
             return redirect(url_for('between_requests'))
 
