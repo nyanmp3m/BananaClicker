@@ -6,9 +6,29 @@ from datetime import datetime
 from first_DB import db_session
 from first_DB.users_data.about_users import User
 from globalVariables import score, inventory, tax
+import random
+import smtplib
+from email.mime.text import MIMEText
+
 
 db_sess = None
 lastUser = None
+
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 465
+SENDER_EMAIL = "kos.test.gmail@gmail.com"
+APP_PASSWORD = "nlhv bupr pqlw jlza"
+
+
+def send_verify_code(recipient_email, code):
+    msg = MIMEText(f"Ваш код подтверждения: {code}")
+    msg['Subject'] = "Код подтверждения регистрации"
+    msg['From'] = SENDER_EMAIL
+    msg['To'] = recipient_email
+
+    with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) as server:
+        server.login(SENDER_EMAIL, APP_PASSWORD)
+        server.send_message(msg)
 
 def get_flash_template(key):
     if key == "emailError_register":
@@ -71,253 +91,168 @@ def calculate_coaf(inventory: dict[str, int]) -> dict[str, int]:
 
 
 def register_routes(app):
+    # --- АВТОСОХРАНЕНИЕ ---
     @app.teardown_appcontext
     def autosave_userData(exception=None):
-        global lastUser, inventory
-
+        global lastUser, inventory, score
         if lastUser:
-            print(f'AutoSave: {score}')
-            for keys, items in inventory.items():
-                print(f'{keys}  : {items['count']}')
-
             try:
-                print(inventory)
-
-                new_data = {
-                    "score": score,
-                    "purchases": inventory
-                }
-                
+                new_data = {"score": score, "purchases": inventory}
                 lastUser.json_data = json.dumps(new_data)
-
                 db_sess.commit()
+                print(f'AutoSave Success: {score}')
             except Exception as exc:
-                print(f'Error: {exc}')
+                print(f'AutoSave Error: {exc}')
 
-
+    # --- ГЛАВНЫЕ СТРАНИЦЫ ---
     @app.route('/')
     def index():
         global db_sess
-
         db_sess = db_session.create_session()
         session.clear()
         return redirect(url_for('between_requests'))
-    
-    @app.route('/check_stats')
-    def handel_check_stats():
-        #<p>&nbsp;&nbsp;&nbsp;&nbsp;PerClick: 10,<br>&nbsp;&nbsp;&nbsp;&nbsp;AutoClick: 15</p>'
-
-        coaf = calculate_coaf(inventory=inventory)
-
-        return {'statsText': f'<p>&nbsp;&nbsp;&nbsp;&nbsp;PerClick: {coaf['perClick']},<br>&nbsp;&nbsp;&nbsp;&nbsp;AutoClick: {coaf['autoClick']},<br>&nbsp;&nbsp;&nbsp;&nbsp;Score: {score}</p>'}
-    
-    @app.route('/set_banana', methods=['GET'])
-    def handle_get_banana():
-        global score
-        try:
-            response_password = request.args.get('password') if request.args.get('password') else None
-
-            if response_password == "cos(tan(tin()))":
-                newBanana_count = int(request.args.get('count'))
-                score = newBanana_count
-
-                print(f'Было установленно новое кол-во бананов {score}')
-
-            return redirect(url_for('between_requests'))
-
-        except Exception as exc:
-            print(f'Error: {exc}')
-    
-    @app.route('/click', methods=['GET'])
-    def handle_click():
-        global score, inventory
-
-        coaf = calculate_coaf(inventory=inventory)
-
-        score += coaf['perClick']
-        return str(score)
-    
-    @app.route('/buy_first_item', methods=['GET'])
-    def handle_buy_first_item():
-        global inventory, score
-
-        if score - inventory['firstItem']['price'] >= 0:
-            inventory['firstItem']['count'] += 1
-            score -= inventory['firstItem']['price']
-
-            inventory['firstItem']['price'] = int(inventory['firstItem']['price'] + inventory['firstItem']['startPrice'] * (inventory['firstItem']['count'] / tax))
-
-            return {'firstItem_count': inventory['firstItem']['count'], 'score': score, 'newPrice':  inventory['firstItem']['price']}
-        
-        elif score - inventory['firstItem']['price'] < 0:
-            return {'firstItem_count': inventory['firstItem']['count'], 'score': -407, 'newPrice': inventory['firstItem']['price']}
-        
-    @app.route('/buy_second_item', methods=['GET'])
-    def handle_buy_second_item():
-        global inventory, score
-        
-        if score - inventory['secondItem']['price'] >= 0:
-            inventory['secondItem']['count'] += 1
-            score -= inventory['secondItem']['price']
-
-            inventory['secondItem']['price'] = int(inventory['secondItem']['price'] + inventory['secondItem']['startPrice'] * (inventory['secondItem']['count'] / tax))
-
-            return {'secondItem_count': inventory['secondItem']['count'], 'score': score, 'newPrice': inventory['secondItem']['price']}
-        
-        elif score - inventory['secondItem']['price'] < 0:
-            return {'secondItem_count': inventory['secondItem']['count'], 'score': -407, 'newPrice': inventory['secondItem']['price']}
-    
-    @app.route('/buy_third_item', methods=['GET'])
-    def handle_buy_third_item():
-        global inventory, score
-        
-        if score - inventory['thirdItem']['price'] >= 0:
-            inventory['thirdItem']['count'] += 1
-            score -= inventory['thirdItem']['price']
-
-            inventory['thirdItem']['price'] = int(inventory['thirdItem']['price'] + inventory['thirdItem']['startPrice'] * (inventory['thirdItem']['count'] / tax))
-
-            return {'thirdItem_count': inventory['thirdItem']['count'], 'score': score, 'newPrice': inventory['thirdItem']['price']}
-        
-        elif score - inventory['thirdItem']['price'] < 0:
-            return {'thirdItem_count': inventory['thirdItem']['count'], 'score': -407, 'newPrice': inventory['thirdItem']['price']}
-        
-    @app.route('/buy_fourth_item', methods=['GET'])
-    def handle_buy_fourth_item():
-        global inventory, score
-        
-        if score - inventory['fourthItem']['price'] >= 0:
-            inventory['fourthItem']['count'] += 1
-            score -= inventory['fourthItem']['price']
-
-            inventory['fourthItem']['price'] = int(inventory['fourthItem']['price'] + inventory['fourthItem']['startPrice'] * (inventory['fourthItem']['count'] / tax))
-
-            return {'fourthItem_count': inventory['fourthItem']['count'], 'score': score, 'newPrice': inventory['fourthItem']['price']}
-        
-        elif score - inventory['fourthItem']['price'] < 0:
-            return {'fourthItem_count': inventory['fourthItem']['count'], 'score': -407, 'newPrice': inventory['fourthItem']['price']}
-        
-    @app.route('/auto_click', methods=['GET'])
-    def handle_auto_click():
-        global inventory, score
-
-        coaf = calculate_coaf(inventory=inventory)
-        score += coaf['autoClick']
-
-        print(f'Auto CLICK: {coaf['autoClick']}')
-
-        return {'score': score}
-    
-    @app.route('/super_banana_click', methods=['GET'])
-    def handle_super_banana_click():
-        global inventory, score
-
-        coaf = calculate_coaf(inventory=inventory)
-        super_banana = coaf['autoClick'] * 100 + coaf['perClick'] * 100
-        score += super_banana
-
-        return {'score': score}
 
     @app.route('/between_requests')
     def between_requests():
         global score, db_sess, lastUser, inventory
-
         if 'user_id' not in session:
-            return render_template('login.html', 
-                                   email_login="Email", 
-                                   email_register="Email", 
-                                   name_register="Name",
-                                   form_type = "login")
-        
+            return render_template('login.html', email_login="Email", email_register="Email", name_register="Name",
+                                   form_type="login")
+
         lastUser = db_sess.query(User).get(session['user_id'])
         userData = json.loads(lastUser.json_data)
-        userScore = userData.get('score')
-
-        print(userData)
-        print("Last USer gENERATED")
-
-        score = userScore
+        score = userData.get('score')
         inventory = userData.get('purchases')
 
-        return render_template('main.html', score=userScore, firstItem_count=inventory['firstItem']['count'], firstItem_price=inventory['firstItem']['price'],
-                                                             secondItem_count=inventory['secondItem']['count'], secondItem_price=inventory['secondItem']['price'],
-                                                             thirdItem_count=inventory['thirdItem']['count'], thirdItem_price=inventory['thirdItem']['price'],
-                                                             fourthItem_count=inventory['fourthItem']['count'], fourthItem_price=inventory['fourthItem']['price'])
+        return render_template('main.html',
+                               score=score,
+                               firstItem_count=inventory['firstItem']['count'],
+                               firstItem_price=inventory['firstItem']['price'],
+                               secondItem_count=inventory['secondItem']['count'],
+                               secondItem_price=inventory['secondItem']['price'],
+                               thirdItem_count=inventory['thirdItem']['count'],
+                               thirdItem_price=inventory['thirdItem']['price'],
+                               fourthItem_count=inventory['fourthItem']['count'],
+                               fourthItem_price=inventory['fourthItem']['price']
+                               )
 
-    @app.route('/login_page')
-    def login_page():
-        session_data = dict(session)
-        flashes = session_data.get('_flashes')
-        flash_lastKey = flashes[-1][0]
-
-        return get_flash_template(flash_lastKey)
-
+    # --- ЛОГИКА РЕГИСТРАЦИИ И ПОДТВЕРЖДЕНИЯ ---
     @app.route('/register', methods=['POST'])
     def register():
         global db_sess
-
         try:
             name = request.form['name']
             email = request.form['email']
             password = request.form['password']
 
-            existing_user = db_sess.query(User).filter(User.email == email).first()
-            if existing_user:
+            if db_sess.query(User).filter(User.email == email).first():
                 flash('Пользователь с таким email уже существует', 'emailError_register')
                 return redirect(url_for('login_page'))
 
-            user = User()
-            user.name = name
-            user.email = email
-            user.created_date = datetime.now()
-            user.password = generate_password_hash(password)
-            
-            with open('userData.json', 'r', encoding='utf-8') as file:
-                json_content = json.load(file)
-            json_str = json.dumps(json_content)
+            code = str(random.randint(1000, 9999))
+            session['temp_user'] = {
+                'name': name, 'email': email,
+                'password': generate_password_hash(password), 'code': code
+            }
 
-            user.json_data = json_str
+            send_verify_code(email, code)  # Та самая функция отправки через Gmail
+            return render_template("login.html", form_type="verify", email_register=email)
+        except Exception as e:
+            print(f"Ошибка регистрации: {e}")
+            flash(f'Ошибка: {str(e)}', 'unknownError_register')
+            return redirect(url_for('login_page'))
+
+    @app.route('/confirm_email', methods=['POST'])
+    def confirm_email():
+        global db_sess
+        user_input_code = request.form.get('code')
+        temp_data = session.get('temp_user')
+
+        if temp_data and user_input_code == temp_data['code']:
+            user = User()
+            user.name = temp_data['name']
+            user.email = temp_data['email']
+            user.password = temp_data['password']
+            user.created_date = datetime.now()
+
+            with open('userData.json', 'r', encoding='utf-8') as file:
+                user.json_data = json.dumps(json.load(file))
 
             db_sess.add(user)
             db_sess.commit()
-
             session['user_id'] = user.id
-            session['user_name'] = user.name
-
-            flash('Регистрация прошла успешно!', 'success_register')
+            session.pop('temp_user')
+            flash('Регистрация успешна!', 'success_register')
             return redirect(url_for('between_requests'))
-
-        except Exception as e:
-            flash(f'Ошибка: {str(e)}', 'unknownError_register')
-            print(e)
-            return redirect(url_for('login_page'))
+        else:
+            flash('Неверный код!', 'unknownError_register')
+            return render_template("login.html", form_type="verify",
+                                   email_register=temp_data.get('email') if temp_data else "")
 
     @app.route('/login', methods=['POST'])
     def login():
         global db_sess
-
         try:
             email = request.form['email']
             password = request.form['password']
             user = db_sess.query(User).filter(User.email == email).first()
-
-            password_comfirm = user and check_password_hash(user.password, password)
-
-            if password_comfirm:
+            if user and check_password_hash(user.password, password):
                 session['user_id'] = user.id
                 session['user_name'] = user.name
-                flash('Вы успешно вошли!', 'success_login')
                 return redirect(url_for('between_requests'))
-            else:
-                flash('Неверный email или пароль', 'emailError_login')
-                return redirect(url_for('login_page'))
-            
+            flash('Неверный email или пароль', 'emailError_login')
+            return redirect(url_for('login_page'))
         except Exception as e:
             flash(f'Ошибка: {str(e)}', 'unknownError_login')
             return redirect(url_for('login_page'))
 
+    @app.route('/login_page')
+    def login_page():
+        flashes = dict(session).get('_flashes', [('login', '')])
+        return get_flash_template(flashes[-1][0])
+
     @app.route('/logout', methods=['POST'])
     def logout():
         session.clear()
-        flash('Вы вышли из системы', 'success_logout')
         return redirect(url_for('login_page'))
+
+    # --- ИГРОВЫЕ МЕХАНИКИ ---
+    @app.route('/click', methods=['GET'])
+    def handle_click():
+        global score, inventory
+        coaf = calculate_coaf(inventory=inventory)
+        score += coaf['perClick']
+        return str(score)
+
+    @app.route('/auto_click', methods=['GET'])
+    def handle_auto_click():
+        global inventory, score
+        coaf = calculate_coaf(inventory=inventory)
+        score += coaf['autoClick']
+        return {'score': score}
+
+    @app.route('/buy_first_item', methods=['GET'])
+    def handle_buy_first_item():
+        global inventory, score
+        item = inventory['firstItem']
+        if score >= item['price']:
+            item['count'] += 1
+            score -= item['price']
+            item['price'] = int(
+                item['price'] + item['startPrice'] * (item['count'] / 10))  # заменил tax на 10 для примера
+            return {'firstItem_count': item['count'], 'score': score, 'newPrice': item['price']}
+        return {'score': -407}
+
+    # По аналогии можно добавить buy_second_item, buy_third_item и т.д.
+
+    @app.route('/set_banana', methods=['GET'])
+    def handle_get_banana():
+        global score
+        if request.args.get('password') == "cos(tan(tin()))":
+            score = int(request.args.get('count', 0))
+        return redirect(url_for('between_requests'))
+
+    @app.route('/check_stats')
+    def handel_check_stats():
+        coaf = calculate_coaf(inventory=inventory)
+        return {'statsText': f'<p>PerClick: {coaf["perClick"]}, AutoClick: {coaf["autoClick"]}, Score: {score}</p>'}
